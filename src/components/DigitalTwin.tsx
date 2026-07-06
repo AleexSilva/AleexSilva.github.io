@@ -3,9 +3,32 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUp, Bot, Sparkles, X } from "lucide-react";
+import ReactMarkdown, { type Components } from "react-markdown";
+import remarkBreaks from "remark-breaks";
 import { digitalTwin, profile } from "@/lib/content";
 
 type Message = { role: "user" | "assistant"; content: string };
+
+const markdownComponents: Components = {
+  p: ({ children }) => <p className="[&:not(:last-child)]:mb-2">{children}</p>,
+  ul: ({ children }) => <ul className="my-1.5 list-disc space-y-1 pl-4">{children}</ul>,
+  ol: ({ children }) => <ol className="my-1.5 list-decimal space-y-1 pl-4">{children}</ol>,
+  a: ({ children, href }) => (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline underline-offset-2 hover:text-amber"
+    >
+      {children}
+    </a>
+  ),
+  code: ({ children }) => (
+    <code className="rounded bg-black/20 px-1 py-0.5 font-mono text-[0.85em]">
+      {children}
+    </code>
+  ),
+};
 
 const GREETING: Message = { role: "assistant", content: digitalTwin.greeting };
 
@@ -159,13 +182,24 @@ export function DigitalTwin() {
                   className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
+                    className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
                       m.role === "user"
-                        ? "rounded-br-sm bg-amber text-[#1a1205]"
+                        ? "whitespace-pre-wrap rounded-br-sm bg-amber text-[#1a1205]"
                         : "rounded-bl-sm border border-border bg-surface text-fg"
                     }`}
                   >
-                    {m.content || (
+                    {m.content ? (
+                      m.role === "assistant" ? (
+                        <ReactMarkdown
+                          remarkPlugins={[remarkBreaks]}
+                          components={markdownComponents}
+                        >
+                          {m.content}
+                        </ReactMarkdown>
+                      ) : (
+                        m.content
+                      )
+                    ) : (
                       <TypingDots />
                     )}
                   </div>
