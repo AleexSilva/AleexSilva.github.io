@@ -52,7 +52,7 @@ export function About() {
                       <p.icon className="h-5 w-5" />
                     </span>
                     <div>
-                      <h3 className="font-[family-name:var(--font-display)] text-base font-semibold text-fg">
+                      <h3 className="font-display text-base font-semibold text-fg">
                         {p.title}
                       </h3>
                       <p className="mt-1 text-sm leading-relaxed text-fg-muted">

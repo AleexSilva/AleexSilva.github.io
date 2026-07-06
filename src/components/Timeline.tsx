@@ -43,7 +43,7 @@ export function Timeline() {
 
                   <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
                     <div>
-                      <h3 className="font-[family-name:var(--font-display)] text-xl font-semibold text-fg">
+                      <h3 className="font-display text-xl font-semibold text-fg">
                         {job.title}
                       </h3>
                       <p className="mt-0.5 text-base font-medium text-amber">

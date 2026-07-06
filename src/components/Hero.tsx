@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowDown, BarChart3, Mail, MapPin } from "lucide-react";
 import { links, profile, stats } from "@/lib/content";
+import { LinkButton } from "./LinkButton";
 
 const container = {
   hidden: {},
@@ -54,7 +55,7 @@ export function Hero() {
 
           <motion.h1
             variants={item}
-            className="mt-7 font-[family-name:var(--font-display)] text-5xl font-bold leading-[1.02] tracking-tight text-fg sm:text-6xl md:text-7xl lg:text-[5.5rem]"
+            className="mt-7 font-display text-5xl font-bold leading-[1.02] tracking-tight text-fg sm:text-6xl md:text-7xl lg:text-[5.5rem]"
           >
             {profile.firstName}
             <br className="hidden sm:block" />{" "}
@@ -63,7 +64,7 @@ export function Hero() {
 
           <motion.p
             variants={item}
-            className="mt-6 max-w-2xl font-[family-name:var(--font-display)] text-xl font-medium text-fg sm:text-2xl"
+            className="mt-6 max-w-2xl font-display text-xl font-medium text-fg sm:text-2xl"
           >
             {profile.tagline}
           </motion.p>
@@ -86,20 +87,21 @@ export function Hero() {
           </motion.div>
 
           <motion.div variants={item} className="mt-9 flex flex-wrap gap-3">
-            <a
+            <LinkButton
               href="#portfolio"
-              className="group inline-flex items-center gap-2 rounded-lg bg-amber px-6 py-3.5 text-sm font-semibold text-[#1a1205] transition hover:bg-amber-bright"
+              className="group gap-2 rounded-lg px-6 py-3.5 text-sm font-semibold"
             >
               Explore the Portfolio
               <BarChart3 className="h-4 w-4 transition group-hover:scale-110" />
-            </a>
-            <a
+            </LinkButton>
+            <LinkButton
               href={`mailto:${links.email}`}
-              className="inline-flex items-center gap-2 rounded-lg border border-border-strong bg-surface/50 px-6 py-3.5 text-sm font-semibold text-fg backdrop-blur transition hover:border-amber/50 hover:bg-surface"
+              variant="secondary"
+              className="gap-2 rounded-lg px-6 py-3.5 text-sm font-semibold backdrop-blur"
             >
               <Mail className="h-4 w-4 text-amber" />
               Get in touch
-            </a>
+            </LinkButton>
           </motion.div>
 
           {/* stat strip */}
@@ -109,7 +111,7 @@ export function Hero() {
           >
             {stats.map((s) => (
               <div key={s.label} className="bg-bg-2/80 px-5 py-5 backdrop-blur">
-                <dt className="font-[family-name:var(--font-display)] text-3xl font-bold text-amber">
+                <dt className="font-display text-3xl font-bold text-amber">
                   {s.value}
                 </dt>
                 <dd className="mt-1 text-xs uppercase tracking-wide text-fg-faint">

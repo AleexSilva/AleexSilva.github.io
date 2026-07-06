@@ -22,7 +22,6 @@
   --amber: #f5b13d;
   --amber-bright: #ffc862;
   --amber-deep: #c8862a;
-  --amber-glow: rgba(245, 177, 61, 0.16);
 }
 
 @theme inline {
@@ -140,11 +139,6 @@ body {
 }
 .animate-drift {
   animation: drift 18s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
 }
 
 /* respect reduced motion */

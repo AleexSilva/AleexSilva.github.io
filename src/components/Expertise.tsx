@@ -18,6 +18,7 @@ import {
   skillLevelWidth,
   type SkillLevel,
 } from "@/lib/content";
+import { resolveIcon } from "@/lib/icons";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
@@ -28,16 +29,16 @@ const categoryIcons: Record<string, LucideIcon> = {
   Briefcase,
 };
 
-const levelColor: Record<SkillLevel, string> = {
-  Expert: "bg-amber",
-  Proficient: "bg-amber/70",
-  Familiar: "bg-amber/40",
-};
-
-const levelBadge: Record<SkillLevel, string> = {
-  Expert: "text-amber border-amber/30 bg-amber/10",
-  Proficient: "text-amber/80 border-amber/20 bg-amber/[0.07]",
-  Familiar: "text-fg-faint border-border bg-surface-2/60",
+const levelStyles: Record<SkillLevel, { bar: string; badge: string }> = {
+  Expert: { bar: "bg-amber", badge: "text-amber border-amber/30 bg-amber/10" },
+  Proficient: {
+    bar: "bg-amber/70",
+    badge: "text-amber/80 border-amber/20 bg-amber/[0.07]",
+  },
+  Familiar: {
+    bar: "bg-amber/40",
+    badge: "text-fg-faint border-border bg-surface-2/60",
+  },
 };
 
 export function Expertise() {
@@ -52,7 +53,7 @@ export function Expertise() {
         {/* skill groups with proficiency bars */}
         <div className="mt-12 grid gap-5 sm:grid-cols-2">
           {skillGroups.map((group, i) => {
-            const Icon = categoryIcons[group.icon] ?? Code2;
+            const Icon = resolveIcon(categoryIcons, group.icon, Code2);
             return (
               <Reveal key={group.category} delay={i * 0.08}>
                 <div className="glass h-full rounded-xl p-6 transition hover:border-amber/40">
@@ -71,14 +72,14 @@ export function Expertise() {
                         <div className="mb-1.5 flex items-center justify-between gap-2">
                           <span className="text-sm text-fg">{skill.name}</span>
                           <span
-                            className={`rounded-full border px-2 py-0.5 font-mono text-[10px] ${levelBadge[skill.level]}`}
+                            className={`rounded-full border px-2 py-0.5 font-mono text-[10px] ${levelStyles[skill.level].badge}`}
                           >
                             {skill.level}
                           </span>
                         </div>
                         <div className="h-1 w-full overflow-hidden rounded-full bg-surface-2">
                           <div
-                            className={`h-full rounded-full transition-all duration-700 ${levelColor[skill.level]}`}
+                            className={`h-full rounded-full transition-all duration-700 ${levelStyles[skill.level].bar}`}
                             style={{ width: skillLevelWidth[skill.level] }}
                           />
                         </div>
@@ -97,7 +98,7 @@ export function Expertise() {
             <div className="glass h-full rounded-xl p-6">
               <div className="flex items-center gap-2.5 text-fg">
                 <GraduationCap className="h-5 w-5 text-amber" />
-                <h3 className="font-[family-name:var(--font-display)] text-base font-semibold">
+                <h3 className="font-display text-base font-semibold">
                   Education
                 </h3>
               </div>
@@ -119,7 +120,7 @@ export function Expertise() {
             <div className="glass h-full rounded-xl p-6">
               <div className="flex items-center gap-2.5 text-fg">
                 <Award className="h-5 w-5 text-amber" />
-                <h3 className="font-[family-name:var(--font-display)] text-base font-semibold">
+                <h3 className="font-display text-base font-semibold">
                   Certifications
                 </h3>
               </div>
@@ -141,7 +142,7 @@ export function Expertise() {
             <div className="glass h-full rounded-xl p-6">
               <div className="flex items-center gap-2.5 text-fg">
                 <LanguagesIcon className="h-5 w-5 text-amber" />
-                <h3 className="font-[family-name:var(--font-display)] text-base font-semibold">
+                <h3 className="font-display text-base font-semibold">
                   Languages
                 </h3>
               </div>

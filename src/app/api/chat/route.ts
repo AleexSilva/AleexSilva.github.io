@@ -1,4 +1,4 @@
-import { Agent, fetch as undiciFetch } from "undici";
+import { Agent, fetch as undiciFetch, type Response as UndiciResponse } from "undici";
 import {
   certifications,
   education,
@@ -12,7 +12,8 @@ import {
 export const runtime = "nodejs";
 
 const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "https://aleexsilva.github.io",
+  "Access-Control-Allow-Origin":
+    process.env.ALLOWED_ORIGIN || "https://aleexsilva.github.io",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
 };
@@ -123,13 +124,14 @@ export async function POST(request: Request) {
     const body = await request.json();
     if (Array.isArray(body?.messages)) {
       messages = body.messages
-        .filter(
-          (m: unknown): m is ChatMessage =>
+        .filter((m: unknown): m is ChatMessage => {
+          const msg = m as ChatMessage;
+          return (
             !!m &&
-            typeof (m as ChatMessage).content === "string" &&
-            ((m as ChatMessage).role === "user" ||
-              (m as ChatMessage).role === "assistant"),
-        )
+            typeof msg.content === "string" &&
+            (msg.role === "user" || msg.role === "assistant")
+          );
+        })
         .slice(-12) // cap history
         .map((m: ChatMessage) => ({
           role: m.role,
@@ -144,7 +146,7 @@ export async function POST(request: Request) {
     return Response.json({ error: "No message provided." }, { status: 400 });
   }
 
-  function callOpenRouter(model: string): Promise<Response> {
+  function callOpenRouter(model: string): Promise<UndiciResponse> {
     return undiciFetch(OPENROUTER_URL, {
       dispatcher: openRouterAgent,
       method: "POST",
@@ -161,17 +163,17 @@ export async function POST(request: Request) {
         max_tokens: 700,
         messages: [{ role: "system", content: SYSTEM_PROMPT }, ...messages],
       }),
-    }) as unknown as Promise<Response>;
+    });
   }
 
   // Try the primary model first, then fall back through free models on
   // rate-limit / unavailability so the Twin keeps answering.
-  let upstream: Response | null = null;
+  let upstream: UndiciResponse | null = null;
   let usedModel = "";
   let lastStatus = 0;
 
   for (const model of MODELS) {
-    let res: Response;
+    let res: UndiciResponse;
     try {
       res = await callOpenRouter(model);
     } catch (err) {

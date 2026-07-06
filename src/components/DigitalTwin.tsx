@@ -3,21 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUp, Bot, Sparkles, X } from "lucide-react";
-import { profile } from "@/lib/content";
+import { digitalTwin, profile } from "@/lib/content";
 
 type Message = { role: "user" | "assistant"; content: string };
 
-const GREETING: Message = {
-  role: "assistant",
-  content: `Hi — I'm Alex's Digital Twin. Ask me anything about his career, skills, or projects, and I'll answer in his voice.`,
-};
+const GREETING: Message = { role: "assistant", content: digitalTwin.greeting };
 
-const SUGGESTIONS = [
-  "What does Alex do now?",
-  "Walk me through his career.",
-  "What's his strongest tech stack?",
-  "What did he do at Deloitte?",
-];
+const SUGGESTIONS = digitalTwin.suggestions;
 
 export function DigitalTwin() {
   const [open, setOpen] = useState(false);
@@ -54,8 +46,8 @@ export function DigitalTwin() {
       const res = await fetch(process.env.NEXT_PUBLIC_CHAT_API_URL ?? "/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // strip the static greeting before sending to the model
-        body: JSON.stringify({ messages: history.filter((m) => m !== GREETING) }),
+        // strip the static greeting (always the first message) before sending to the model
+        body: JSON.stringify({ messages: history.slice(1) }),
       });
 
       if (!res.ok || !res.body) {

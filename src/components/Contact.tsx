@@ -1,5 +1,6 @@
 import { ArrowUpRight, Mail } from "lucide-react";
 import { links } from "@/lib/content";
+import { LinkButton } from "./LinkButton";
 import { Reveal } from "./Reveal";
 
 export function Contact() {
@@ -16,7 +17,7 @@ export function Contact() {
               <span className="font-mono text-xs uppercase tracking-[0.25em] text-amber">
                 Contact
               </span>
-              <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-semibold tracking-tight text-fg sm:text-4xl md:text-5xl">
+              <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-fg sm:text-4xl md:text-5xl">
                 Let&apos;s build something
                 <br />
                 <span className="text-amber-gradient">worth measuring.</span>
@@ -27,22 +28,23 @@ export function Contact() {
               </p>
 
               <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <a
+                <LinkButton
                   href={`mailto:${links.email}`}
-                  className="group inline-flex w-full items-center justify-center gap-2 rounded-lg bg-amber px-6 py-3.5 text-sm font-semibold text-[#1a1205] transition hover:bg-amber-bright sm:w-auto"
+                  className="group w-full justify-center gap-2 rounded-lg px-6 py-3.5 text-sm font-semibold sm:w-auto"
                 >
                   <Mail className="h-4 w-4" />
                   {links.email}
-                </a>
-                <a
+                </LinkButton>
+                <LinkButton
                   href={links.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex w-full items-center justify-center gap-2 rounded-lg border border-border-strong bg-surface/50 px-6 py-3.5 text-sm font-semibold text-fg transition hover:border-amber/50 hover:bg-surface sm:w-auto"
+                  variant="secondary"
+                  className="group w-full justify-center gap-2 rounded-lg px-6 py-3.5 text-sm font-semibold sm:w-auto"
                 >
                   Connect on LinkedIn
                   <ArrowUpRight className="h-4 w-4 text-amber transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </a>
+                </LinkButton>
               </div>
             </div>
           </div>

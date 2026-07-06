@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import { navItems, profile } from "@/lib/content";
+import { profile } from "@/lib/content";
+import { LinkButton } from "./LinkButton";
+import { Logo } from "./Logo";
+import { NavLinks } from "./NavLinks";
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -26,31 +29,21 @@ export function Nav() {
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
         <a
           href="#top"
-          className="group flex items-center gap-2.5 font-[family-name:var(--font-display)] text-sm font-semibold tracking-tight text-fg"
+          className="group flex items-center gap-2.5 font-display text-sm font-semibold tracking-tight text-fg"
         >
-          <span className="grid h-8 w-8 place-items-center rounded-md bg-amber/15 text-amber ring-1 ring-amber/30 transition group-hover:bg-amber/25">
-            AS
-          </span>
+          <Logo hoverable />
           <span className="hidden sm:inline">{profile.name}</span>
         </a>
 
         {/* desktop links */}
         <div className="hidden items-center gap-1 md:flex">
-          {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="rounded-md px-3 py-2 text-sm text-fg-muted transition hover:text-fg"
-            >
-              {item.label}
-            </a>
-          ))}
-          <a
+          <NavLinks className="rounded-md px-3 py-2 text-sm text-fg-muted transition hover:text-fg" />
+          <LinkButton
             href="#portfolio"
-            className="ml-3 inline-flex items-center rounded-md bg-amber px-4 py-2 text-sm font-medium text-[#1a1205] transition hover:bg-amber-bright"
+            className="ml-3 rounded-md px-4 py-2 text-sm font-medium"
           >
             Portfolio
-          </a>
+          </LinkButton>
         </div>
 
         {/* mobile toggle */}
@@ -69,23 +62,17 @@ export function Nav() {
       {open ? (
         <div className="glass border-t border-border md:hidden">
           <div className="mx-auto flex max-w-6xl flex-col px-5 py-3 sm:px-8">
-            {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="rounded-md px-2 py-3 text-base text-fg-muted transition hover:text-fg"
-              >
-                {item.label}
-              </a>
-            ))}
-            <a
+            <NavLinks
+              className="rounded-md px-2 py-3 text-base text-fg-muted transition hover:text-fg"
+              onItemClick={() => setOpen(false)}
+            />
+            <LinkButton
               href="#portfolio"
               onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center rounded-md bg-amber px-4 py-3 text-sm font-medium text-[#1a1205]"
+              className="mt-2 justify-center rounded-md px-4 py-3 text-sm font-medium"
             >
               View Portfolio
-            </a>
+            </LinkButton>
           </div>
         </div>
       ) : null}

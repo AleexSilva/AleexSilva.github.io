@@ -12,11 +12,13 @@ import {
   LineChart,
   Sparkles,
 } from "lucide-react";
-import { links, projects, type ProjectCategory } from "@/lib/content";
+import type { LucideIcon } from "lucide-react";
+import { links, projects, PROJECT_CATEGORIES, type ProjectCategory } from "@/lib/content";
+import { resolveIcon } from "@/lib/icons";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
-const categoryIcons: Record<string, React.ElementType> = {
+const categoryIcons: Record<string, LucideIcon> = {
   ML: Brain,
   BI: LineChart,
   "Data Engineering": Database,
@@ -24,14 +26,7 @@ const categoryIcons: Record<string, React.ElementType> = {
   Engineering: Code2,
 };
 
-const filters: Array<"All" | ProjectCategory> = [
-  "All",
-  "ML",
-  "BI",
-  "Data Engineering",
-  "AI",
-  "Engineering",
-];
+const filters: Array<"All" | ProjectCategory> = ["All", ...PROJECT_CATEGORIES];
 
 export function Portfolio() {
   const [active, setActive] = useState<"All" | ProjectCategory>("All");
@@ -73,7 +68,7 @@ export function Portfolio() {
         {/* project grid */}
         <div className="mt-8 grid gap-5 md:grid-cols-2">
           {visible.map((project, i) => {
-            const Icon = categoryIcons[project.category] ?? BarChart3;
+            const Icon = resolveIcon(categoryIcons, project.category, BarChart3);
             return (
               <Reveal
                 key={project.id}
@@ -112,7 +107,7 @@ export function Portfolio() {
 
                   <div className="relative mt-5">
                     <h3
-                      className={`font-[family-name:var(--font-display)] font-semibold text-fg ${
+                      className={`font-display font-semibold text-fg ${
                         project.featured ? "text-2xl" : "text-xl"
                       }`}
                     >

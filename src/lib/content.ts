@@ -22,7 +22,17 @@ export const links = {
   linkedin: "https://www.linkedin.com/in/aleex-silva",
   linkedinLabel: "linkedin.com/in/aleex-silva",
   portfolio: "https://alex-silva-portfolio.streamlit.app/",
-  portfolioLabel: "alex-silva-portfolio.streamlit.app",
+} as const;
+
+export const digitalTwin = {
+  greeting:
+    "Hi — I'm Alex's Digital Twin. Ask me anything about his career, skills, or projects, and I'll answer in his voice.",
+  suggestions: [
+    "What does Alex do now?",
+    "Walk me through his career.",
+    "What's his strongest tech stack?",
+    "What did he do at Deloitte?",
+  ],
 } as const;
 
 export const stats = [
@@ -198,7 +208,8 @@ export const navItems = [
   { label: "Contact", href: "#contact" },
 ];
 
-export type ProjectCategory = "ML" | "BI" | "Data Engineering" | "AI" | "Engineering";
+export const PROJECT_CATEGORIES = ["ML", "BI", "Data Engineering", "AI", "Engineering"] as const;
+export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
 
 export type Project = {
   id: string;
